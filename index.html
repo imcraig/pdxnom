@@ -12,6 +12,11 @@
 var initialLocation;
 var siberia = new google.maps.LatLng(60, 105);
 var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
+
+var cartopia = new google.maps.LatLng(45.512431,-122.65332);  /// 12th and se hawthorne ,"cartopia"
+var pod0 = new google.maps.LatLng(45.519934,-122.674499); // 3rd and sw washington
+var pod1 = new google.maps.LatLng(45.521143,-122.676215); // 5th and sw stark
+
 var browserSupportFlag =  new Boolean();
 var map;
 var infowindow = new google.maps.InfoWindow();
@@ -54,6 +59,11 @@ function initialize() {
     browserSupportFlag = false;
     handleNoGeolocation(browserSupportFlag);
   }
+  var marker = new google.maps.Marker({
+    position: initialLocation,
+    map: map,
+    title: "You are here",
+  });
 }
 
 function handleNoGeolocation(errorFlag) {
