@@ -5,4 +5,8 @@ pdxnom.com is mobile website which aims to solve the perennial question of "Wher
 is the closest foodcart to where I am this second?" and other related quesions
 that plague our fair city.
 
+## Hacking on pdxnom
+
+pdnom uses the Jasmine test framework: https://github.com/pivotal/jasmine/wiki
+
 ## NOM NOM NOM
