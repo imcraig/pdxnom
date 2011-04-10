@@ -86,6 +86,14 @@ function initialize() {
     map     : map,
     title   : "Pod area 2"
   });
+  // Example of using jquery-ui-map to load markers from JSON
+  //  $('#map_canvas').gmap({ 'center':new google.maps.LatLng(42.345573,-71.098326), 'callback': function() {
+  //      $.getJSON( 'http://jquery-ui-map.googlecode.com/svn/trunk/demos/json.json', 'category=activity', function(data) { 
+  //          $.each( data.markers, function(i, m) {
+  //              $('#map_canvas').gmap('addMarker', { 'position': new google.maps.LatLng(m.lat, m.lng) } );
+  //          });
+  //      });
+  //  }});
 }
 
 function handleNoGeolocation(errorFlag) {
