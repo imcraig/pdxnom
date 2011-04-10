@@ -10,8 +10,6 @@
 <script type="text/javascript">
 
 var initialLocation;
-var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
-
 var cartopia = new google.maps.LatLng(45.512431,-122.65332);  /// 12th and se hawthorne ,"cartopia"
 var pod0 = new google.maps.LatLng(45.519934,-122.674499); // 3rd and sw washington
 var pod1 = new google.maps.LatLng(45.521143,-122.676215); // 5th and sw stark
@@ -23,8 +21,8 @@ var contentString = "You are here";
   
 function initialize() {
   var myOptions = {
-    zoom: 10,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    zoom      : 12,
+    mapTypeId : google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
   
@@ -82,11 +80,11 @@ function initialize() {
 
 function handleNoGeolocation(errorFlag) {
   if (errorFlag == true) {
-    initialLocation = newyork;
-    contentString = "Error: The Geolocation service failed.";
+    initialLocation = cartopia;
+    contentString = "Cartopia";
   } else {
-    initialLocation = siberia;
-    contentString = "Error: Your browser doesn't support geolocation. Are you in Siberia?";
+    initialLocation = cartopia;
+    contentString = "Cartopia";
   }
   map.setCenter(initialLocation);
   infowindow.setContent(contentString);
