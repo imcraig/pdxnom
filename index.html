@@ -10,7 +10,6 @@
 <script type="text/javascript">
 
 var initialLocation;
-var siberia = new google.maps.LatLng(60, 105);
 var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
 
 var cartopia = new google.maps.LatLng(45.512431,-122.65332);  /// 12th and se hawthorne ,"cartopia"
@@ -59,10 +58,25 @@ function initialize() {
     browserSupportFlag = false;
     handleNoGeolocation(browserSupportFlag);
   }
-  var marker = new google.maps.Marker({
-    position: initialLocation,
-    map: map,
-    title: "You are here",
+  new google.maps.Marker({
+    position : initialLocation,
+    map      : map,
+    title    : "You are here"
+  });
+  new google.maps.Marker({
+    position: cartopia,
+    map     : map,
+    title   : "Cartopia"
+  });
+  new google.maps.Marker({
+    position: cartopia,
+    map     : map,
+    title   : "Pod area 1"
+  });
+  new google.maps.Marker({
+    position: cartopia,
+    map     : map,
+    title   : "Pod area 2"
   });
 }
 
