@@ -63,7 +63,8 @@ function initialize() {
   
   map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
   directionsDisplay.setMap(map);
-  
+  var bounds = new google.maps.LatLngBounds();
+
   // Try W3C Geolocation method (Preferred)
   if(navigator.geolocation) {
     browserSupportFlag = true;
@@ -81,6 +82,10 @@ function initialize() {
     browserSupportFlag = false;
     handleNoGeolocation(browserSupportFlag);
   }
+  // need to do this for each marker
+  // var ll = new google.maps.LatLng(cartopia.lat, cartopia.lng);
+  // bounds.extend(ll);
+
   new google.maps.Marker({
     position : initialLocation,
     map      : map,
@@ -101,6 +106,9 @@ function initialize() {
     map     : map,
     title   : "Pod area 2"
   });
+
+  // fit the map to the markers
+  //map.fitBounds(bounds);
 }
 
 function handleNoGeolocation(errorFlag) {
