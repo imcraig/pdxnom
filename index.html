@@ -111,6 +111,10 @@ function initialize() {
 
   // fit the map to the markers
   //map.fitBounds(bounds);
+
+
+  // Show the directions for the currently-selected travel mode
+  calcRoute();
 }
 function detectBrowser() {
     var useragent = navigator.userAgent;
