@@ -55,12 +55,14 @@ var infowindow = new google.maps.InfoWindow();
 var contentString = "You are here";
   
 function initialize() {
+  detectBrowser();
   directionsDisplay = new google.maps.DirectionsRenderer();
+
   var myOptions = {
     zoom      : 12,
     mapTypeId : google.maps.MapTypeId.ROADMAP
   };
-  
+
   map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
   directionsDisplay.setMap(map);
   var bounds = new google.maps.LatLngBounds();
@@ -109,6 +111,18 @@ function initialize() {
 
   // fit the map to the markers
   //map.fitBounds(bounds);
+}
+function detectBrowser() {
+    var useragent = navigator.userAgent;
+    var mapdiv = document.getElementById("map_canvas");
+
+    if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
+        mapdiv.style.width = '100%';
+        mapdiv.style.height = '100%';
+    } else {
+        mapdiv.style.width = '600px';
+        mapdiv.style.height = '800px';
+    }
 }
 
 function handleNoGeolocation(errorFlag) {
