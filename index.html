@@ -42,7 +42,8 @@ body {
 <script src="./lib/ui/jquery.ui.map.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-
+var directionDisplay;
+var directionsService = new google.maps.DirectionsService();
 var initialLocation;
 var cartopia = new google.maps.LatLng(45.512431,-122.65332);  /// 12th and se hawthorne ,"cartopia"
 var pod0 = new google.maps.LatLng(45.519934,-122.674499); // 3rd and sw washington
@@ -54,11 +55,14 @@ var infowindow = new google.maps.InfoWindow();
 var contentString = "You are here";
   
 function initialize() {
+  directionsDisplay = new google.maps.DirectionsRenderer();
   var myOptions = {
     zoom      : 12,
     mapTypeId : google.maps.MapTypeId.ROADMAP
   };
+  
   map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  directionsDisplay.setMap(map);
   
   // Try W3C Geolocation method (Preferred)
   if(navigator.geolocation) {
@@ -112,6 +116,24 @@ function handleNoGeolocation(errorFlag) {
   infowindow.setPosition(initialLocation);
   infowindow.open(map);
 }
+
+function calcRoute() {
+    var selectedMode = document.getElementById("mode").value;
+    var request = {
+        origin: initialLocation,
+        destination: cartopia,
+        // Note that Javascript allows us to access the constant
+        // using square brackets and a string value as its
+        // "property."
+        travelMode: google.maps.DirectionsTravelMode[selectedMode]
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+      }
+      });
+    }
+
 </script>
 </head>
 <body onload="initialize()">
@@ -125,9 +147,9 @@ function handleNoGeolocation(errorFlag) {
   
   <b>Mode of Travel: </b> 
 <select id="mode" onchange="calcRoute();"> 
+  <option value="BICYCLING">Bicycling</option> 
   <option value="DRIVING">Driving</option> 
   <option value="WALKING">Walking</option> 
-  <option value="BICYCLING">Bicycling</option> 
 </select> </div>
   
   
