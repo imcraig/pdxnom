@@ -88,26 +88,14 @@ function initialize() {
   // var ll = new google.maps.LatLng(cartopia.lat, cartopia.lng);
   // bounds.extend(ll);
 
-  new google.maps.Marker({
-    position : initialLocation,
-    map      : map,
-    title    : "You are here"
-  });
-  new google.maps.Marker({
-    position: cartopia,
-    map     : map,
-    title   : "Cartopia"
-  });
-  new google.maps.Marker({
-    position: pod0,
-    map     : map,
-    title   : "Pod area 1"
-  });
-  new google.maps.Marker({
-    position: pod1,
-    map     : map,
-    title   : "Pod area 2"
-  });
+ $(function() {
+    $('#map_canvas').gmap({ 'center':initialLocation, 'callback': function() {
+        $('#map_canvas').gmap('loadJSON', '/data/carts.json', 'category=activity', function(i, m) {
+            $('#map_canvas').gmap('addMarker', { 'position': new google.maps.LatLng(m.lat, m.lng) } );
+        });
+    }
+   });
+});
 
   // fit the map to the markers
   //map.fitBounds(bounds);
