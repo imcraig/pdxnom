@@ -1,0 +1,31 @@
+use Text::CSV;
+use Modern::Perl;
+
+### {"markers":[{"lat":57.7973333,"lng":12.0502107,"title":"Angered"},{"lat":57.6969943,"lng":11.9865,"title":"Gothenburg"}]}
+
+# This turns simple Name, Lat, Long CSV file into JSON loadable by jquery-ui-map, described here:
+# http://jquery-ui-map.googlecode.com/svn/trunk/demos/load JSON example.html
+
+my $PRE = '{"markers":[';
+my $POST = ']}';
+
+my $file = shift || die "Usage: $0 foo.csv > foo.json";
+
+my @rows;
+my $output;
+my $csv = Text::CSV->new ( { binary => 1 } )  # should set binary attribute.
+    or die "Cannot use CSV: ".Text::CSV->error_diag ();
+
+open my $fh, "<:encoding(utf8)", $file, or die "$file $!";
+while ( my $row = $csv->getline( $fh ) ) {
+    $output .= sprintf('{"title":"%s", "lat":%f, "lng":%f},', map { $row->[$_] } (0..2));
+}
+# remove the last trailing comma
+chop $output;
+$csv->eof or $csv->error_diag();
+close $fh;
+
+if( $output) {
+    print $PRE . $output . $POST;
+}
+
