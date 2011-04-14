@@ -90,7 +90,7 @@ function initialize() {
 
  $(function() {
     $('#map_canvas').gmap({ 'center':initialLocation, 'callback': function() {
-        $('#map_canvas').gmap('loadJSON', '/data/carts.json', 'category=activity', function(i, m) {
+        $('#map_canvas').gmap('loadJSON', 'http//pdxnom.com/data/carts.json', 'category=activity', function(i, m) {
             $('#map_canvas').gmap('addMarker', { 'position': new google.maps.LatLng(m.lat, m.lng) } );
         });
     }
