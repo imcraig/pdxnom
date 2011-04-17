@@ -35,7 +35,8 @@ body {
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 <title>pdxnom.com - nom nom nom</title>
 <!-- <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" /> -->
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=true_or_false&amp;key=ABQIAAAAahhgUYIpyVf89WHOHQmZIBQ5pWIGtBA_4SafoYcHmaUlnfkK6xT0VJFMmOR9ERA27D6765SWLQ-vgA" type="text/javascript"></script>
+
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
@@ -88,10 +89,11 @@ function initialize() {
   // var ll = new google.maps.LatLng(cartopia.lat, cartopia.lng);
   // bounds.extend(ll);
 
- $(function() {
+ $(document).ready(function() {
+    console.log("centering map");
     $('#map_canvas').gmap({ 'center':initialLocation, 'callback': function() {
         console.log("loading JSON");
-        $('#map_canvas').gmap('loadJSON', 'http://pdxnom.com/data/carts.json', 'category=activity', function(i, m) {
+        $('#map_canvas').gmap('loadJSON', 'http://pdxnom.com/data/carts.json', function(i, m) {
             console.log("adding marker " + m.lat + " " + m.lng);
             $('#map_canvas').gmap('addMarker', { 'position': new google.maps.LatLng(m.lat, m.lng) } );
         });
