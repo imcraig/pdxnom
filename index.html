@@ -66,6 +66,7 @@ function initialize() {
   detectBrowser();
   directionsDisplay = new google.maps.DirectionsRenderer();
 
+  /*
   var myOptions = {
     zoom      : 12,
     mapTypeId : google.maps.MapTypeId.ROADMAP
@@ -95,10 +96,10 @@ function initialize() {
   // need to do this for each marker
   // var ll = new google.maps.LatLng(cartopia.lat, cartopia.lng);
   // bounds.extend(ll);
-
+    */
  $(document).ready(function() {
     console.log("centering map");
-    $('#map_canvas').gmap({ 'center':initialLocation, 'callback': function() {
+    $('#map_canvas').gmap({ 'center': cartopia, 'zoom': 12, 'callback': function() {
         console.log("loading JSON");
         $('#map_canvas').gmap('loadJSON', 'http://pdxnom.com/data/carts.json', function(i, m) {
             console.log("adding marker " + m.lat + " " + m.lng);
@@ -113,7 +114,7 @@ function initialize() {
 
 
   // Show the directions for the currently-selected travel mode
-  calcRoute();
+  //calcRoute();
 }
 function detectBrowser() {
     var useragent = navigator.userAgent;
