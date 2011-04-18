@@ -63,51 +63,23 @@ var infowindow = new google.maps.InfoWindow();
 var contentString = "You are here";
   
 function initialize() {
-  detectBrowser();
-  directionsDisplay = new google.maps.DirectionsRenderer();
+    detectBrowser();
+    directionsDisplay = new google.maps.DirectionsRenderer();
 
-  /*
-  var myOptions = {
-    zoom      : 12,
-    mapTypeId : google.maps.MapTypeId.ROADMAP
-  };
+    $(document).ready(function() {
+        console.log("centering map");
 
-  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-  directionsDisplay.setMap(map);
-  var bounds = new google.maps.LatLngBounds();
+        $('#map_canvas').gmap({ 'center': cartopia, 'zoom': 12 });
 
-  // Try W3C Geolocation method (Preferred)
-  if(navigator.geolocation) {
-    browserSupportFlag = true;
-    navigator.geolocation.getCurrentPosition(function(position) {
-      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-      map.setCenter(initialLocation);
-      infowindow.setContent(contentString);
-      infowindow.setPosition(initialLocation);
-      infowindow.open(map);
-    }, function() {
-      handleNoGeolocation(browserSupportFlag);
+        $.getJSON("http://pdxnom.com/data/carts.json",
+            function(data) {
+                $.each(data.items, function(i,m){
+                    console.log("adding marker " + m.lat + " " + m.lng );
+                    $('#map_canvas').gmap('addMarker', { 'position': new google.maps.LatLng(m.lat, m.lng) } );
+                });
+            });
     });
-  } else {
-    // Browser doesn't support Geolocation
-    browserSupportFlag = false;
-    handleNoGeolocation(browserSupportFlag);
-  }
-  // need to do this for each marker
-  // var ll = new google.maps.LatLng(cartopia.lat, cartopia.lng);
-  // bounds.extend(ll);
-    */
- $(document).ready(function() {
-    console.log("centering map");
-    $('#map_canvas').gmap({ 'center': cartopia, 'zoom': 12, 'callback': function() {
-        console.log("loading JSON");
-        $('#map_canvas').gmap('loadJSON', 'http://pdxnom.com/data/carts.json', function(i, m) {
-            console.log("adding marker " + m.lat + " " + m.lng);
-            $('#map_canvas').gmap('addMarker', { 'position': new google.maps.LatLng(m.lat, m.lng) } );
-        });
-    }
-   });
-});
+}
 
   // fit the map to the markers
   //map.fitBounds(bounds);
@@ -115,7 +87,7 @@ function initialize() {
 
   // Show the directions for the currently-selected travel mode
   //calcRoute();
-}
+//}
 function detectBrowser() {
     var useragent = navigator.userAgent;
     var mapdiv = document.getElementById("map_canvas");
