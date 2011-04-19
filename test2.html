@@ -11,14 +11,22 @@
 
 </head>
 <body>
-<div id="map" style="width: 500px; height: 400px;"></div>
+  <div id="travel_mode">
+  <b>Traveling by: </b>
+<select id="mode" onchange="calcRoute();">
+  <option value="BICYCLING">Bike</option>
+  <option value="DRIVING">Car</option>
+  <option value="WALKING">Foot</option>
+</select> </div>
+<div id="map_canvas" style="width: 500px; height: 400px;"></div>
 
 <script type="text/javascript">
+detectBrowser();
 var cartopia = new google.maps.LatLng(45.512431,-122.65332);  /// 12th and se hawthorne ,"cartopia"
 var pod0 = new google.maps.LatLng(45.519934,-122.674499); // 3rd and sw washington
 var pod1 = new google.maps.LatLng(45.521143,-122.676215); // 5th and sw stark
 
-var map = new google.maps.Map(document.getElementById('map'), {
+var map = new google.maps.Map(document.getElementById('map_canvas'), {
     zoom: 13,
     center: cartopia,
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -51,6 +59,19 @@ $.getJSON("./data/carts.json",
                 })(marker, i));
         });
     });
+
+function detectBrowser() {
+    var useragent = navigator.userAgent;
+    var mapdiv = document.getElementById("map_canvas");
+
+    if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
+
+    } else {
+        mapdiv.style.width = '600px';
+        mapdiv.style.height = '800px';
+    }
+}
+function calcRoute() { }
 </script>
 </body>
 </html>
