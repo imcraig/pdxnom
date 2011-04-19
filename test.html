@@ -42,12 +42,10 @@ body {
 //<![CDATA[
 google.load("maps", "3", {'other_params':'sensor=true'});
 google.load("jquery", "1.5");
-google.load("jqueryui", "1.8.9");
+//google.load("jqueryui", "1.8.9");
 //]]>
 </script> 
 
-
-<script src="./lib/ui/jquery.ui.map.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 var directionDisplay;
@@ -58,56 +56,40 @@ var pod0 = new google.maps.LatLng(45.519934,-122.674499); // 3rd and sw washingt
 var pod1 = new google.maps.LatLng(45.521143,-122.676215); // 5th and sw stark
 
 var browserSupportFlag =  new Boolean();
-var map;
 var infowindow = new google.maps.InfoWindow();
 var contentString = "You are here";
-  
+
 function initialize() {
-  detectBrowser();
-  directionsDisplay = new google.maps.DirectionsRenderer();
+    var myOptions = {
+        zoom      : 12,
+        mapTypeId : google.maps.MapTypeId.ROADMAP
+    };
+    var map;
+    detectBrowser();
+    directionsDisplay = new google.maps.DirectionsRenderer();
 
-  /*
-  var myOptions = {
-    zoom      : 12,
-    mapTypeId : google.maps.MapTypeId.ROADMAP
-  };
+    $(document).ready(function() {
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-  directionsDisplay.setMap(map);
-  var bounds = new google.maps.LatLngBounds();
+        console.log("centering map");
 
-  // Try W3C Geolocation method (Preferred)
-  if(navigator.geolocation) {
-    browserSupportFlag = true;
-    navigator.geolocation.getCurrentPosition(function(position) {
-      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-      map.setCenter(initialLocation);
-      infowindow.setContent(contentString);
-      infowindow.setPosition(initialLocation);
-      infowindow.open(map);
-    }, function() {
-      handleNoGeolocation(browserSupportFlag);
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    browserSupportFlag = false;
-    handleNoGeolocation(browserSupportFlag);
-  }
-  // need to do this for each marker
-  // var ll = new google.maps.LatLng(cartopia.lat, cartopia.lng);
-  // bounds.extend(ll);
-    */
- $(document).ready(function() {
-    console.log("centering map");
-    $('#map_canvas').gmap({ 'center': cartopia, 'zoom': 12, 'callback': function() {
-        console.log("loading JSON");
-        $('#map_canvas').gmap('loadJSON', 'http://pdxnom.com/data/carts.json', function(i, m) {
-            console.log("adding marker " + m.lat + " " + m.lng);
-            $('#map_canvas').gmap('addMarker', { 'position': new google.maps.LatLng(m.lat, m.lng) } );
-        });
-    }
-   });
-});
+            $.getJSON("./data/carts.json",
+                function(data) {
+                    //console.dir(data);
+                    $.each(data.markers, function(i,m){
+                        if ( i < 10 ) {
+                            console.log("adding marker " + m.lat + " " + m.lng + " i= " + i );
+                            var loc = new google.maps.LatLng(m.lat, m.lng);
+                            new google.maps.Marker({
+                              position: loc,
+                              map     : map,
+                              title   : m.title
+                            });
+                        }
+                    });
+                });
+      });
+}
 
   // fit the map to the markers
   //map.fitBounds(bounds);
@@ -115,7 +97,7 @@ function initialize() {
 
   // Show the directions for the currently-selected travel mode
   //calcRoute();
-}
+//}
 function detectBrowser() {
     var useragent = navigator.userAgent;
     var mapdiv = document.getElementById("map_canvas");
