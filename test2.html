@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+<title>Google Maps Multiple Markers</title> 
+<script src="http://www.google.com/jsapi?key=ABQIAAAAahhgUYIpyVf89WHOHQmZIBQ5pWIGtBA_4SafoYcHmaUlnfkK6xT0VJFMmOR9ERA27D6765SWLQ-vgA" type="text/javascript"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+google.load("maps", "3", {'other_params':'sensor=true'});
+google.load("jquery", "1.5");
+//google.load("jqueryui", "1.8.9");
+//]]>
+</script> 
+</head> 
+<body>
+<div id="map" style="width: 500px; height: 400px;"></div>
+
+<script type="text/javascript">
+var cartopia = new google.maps.LatLng(45.512431,-122.65332);  /// 12th and se hawthorne ,"cartopia"
+var pod0 = new google.maps.LatLng(45.519934,-122.674499); // 3rd and sw washington
+var pod1 = new google.maps.LatLng(45.521143,-122.676215); // 5th and sw stark
+
+var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 10,
+    center: cartopia,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+var infowindow = new google.maps.InfoWindow();
+var marker, i;
+
+$.getJSON("./data/carts.json",
+    function(data) {
+        //console.dir(data);
+        $.each(data.markers, function(i,m){
+            if ( i < 10 ) {
+                console.log("adding marker " + m.lat + " " + m.lng + " i= " + i );
+                var loc = new google.maps.LatLng(m.lat, m.lng);
+                var marker = new google.maps.Marker({
+                    position: loc,
+                    map     : map
+                });
+                //google.maps.event.addListener(marker, 'click', (function(marker, m) {
+                //    return function() {
+                //        infowindow.setContent(m.title);
+                //        infowindow.open(map, marker);
+                //    }
+                //})(marker, i));
+            }
+        });
+    });
+
+}
+</script>
+</body>
+</html>
