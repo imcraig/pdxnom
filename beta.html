@@ -13,7 +13,7 @@
 <body>
   <div id="travel_mode">
   <b>Traveling by: </b>
-<select id="mode" onchange="calcRoute();">
+<select id="mode" onchange="calcRoute(user_location);">
   <option value="BICYCLING">Bike</option>
   <option value="DRIVING">Car</option>
   <option value="WALKING">Foot</option>
@@ -21,10 +21,16 @@
 <div id="map_canvas" style="width: 500px; height: 400px;"></div>
 
 <script type="text/javascript">
-detectBrowser();
+var directionsService = new google.maps.DirectionsService();
+var directionsDisplay = new google.maps.DirectionsRenderer();
 var cartopia = new google.maps.LatLng(45.512431,-122.65332);  /// 12th and se hawthorne ,"cartopia"
 var pod0 = new google.maps.LatLng(45.519934,-122.674499); // 3rd and sw washington
 var pod1 = new google.maps.LatLng(45.521143,-122.676215); // 5th and sw stark
+
+detectBrowser();
+
+var user_location = get_user_location();
+
 
 var map = new google.maps.Map(document.getElementById('map_canvas'), {
     zoom: 13,
@@ -35,6 +41,8 @@ var map = new google.maps.Map(document.getElementById('map_canvas'), {
 var infowindow = new google.maps.InfoWindow();
 var marker, i;
 
+directionsDisplay.setMap(map);
+
 new google.maps.Marker({
     position: cartopia,
     map     : map
@@ -44,8 +52,13 @@ $.getJSON("./data/carts.json",
     function(data) {
         console.dir(data);
         $.each(data.markers, function(i,m){
+                // just load 20 markers for testing
+                if ( i > 20 ) { return; }
+
                 console.log("adding marker " + m.lat + " " + m.lng + " i= " + i );
                 // TODO: lat and long are reversed in data file
+
+
                 var loc = new google.maps.LatLng(m.lng , m.lat );
                 var marker = new google.maps.Marker({
                     position: loc,
@@ -60,6 +73,8 @@ $.getJSON("./data/carts.json",
         });
     });
 
+calcRoute(user_location);
+
 function detectBrowser() {
     var useragent = navigator.userAgent;
     var mapdiv = document.getElementById("map_canvas");
@@ -71,7 +86,55 @@ function detectBrowser() {
         mapdiv.style.height = '800px';
     }
 }
-function calcRoute() { }
+
+function get_user_location() {
+    // default to cartopia for now
+    var user_location = cartopia;
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+        user_location = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+        map.setCenter(user_location);
+        infowindow.setContent(contentString);
+        infowindow.setPosition(user_location);
+        infowindow.open(map);
+        }, function() {
+            set_default_location();
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        set_default_location();
+    }
+    return user_location;
+}
+
+function set_default_location() {
+  contentString = "Cartopia";
+  map.setCenter(cartopia);
+  infowindow.setContent(contentString);
+  infowindow.setPosition(cartopia);
+  infowindow.open(map);
+}
+
+function calcRoute(user_location) {
+    console.log('calculating route from ' + user_location);
+    var selectedMode = document.getElementById("mode").value;
+    var request = {
+        origin: user_location,
+        destination: pod1,
+        // Note that Javascript allows us to access the constant
+        // using square brackets and a string value as its
+        // "property."
+        travelMode: google.maps.DirectionsTravelMode[selectedMode]
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        console.log('setting directionDisplay');
+        directionsDisplay.setDirections(response);
+      } else {
+        console.log('direciton service error:' + status);
+      }
+      });
+}
 </script>
 </body>
 </html>
