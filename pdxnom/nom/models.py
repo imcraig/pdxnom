@@ -5,12 +5,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Cart(models.Model):
-    start       = models.DateTimeField()
-    end         = models.DateTimeField()
-    completed   = models.BooleanField()
-    created_by  = models.ForeignKey(User)
-    created_at  = models.DateTimeField()
-    description = models.TextField()
-    name = models.TextField()
-    
-`
+    name                = models.TextField()
+    description         = models.TextField()
+    latitude            = models.NumberField()
+    longitude           = models.NumberField()
+    website             = models.TextField()
+    twitter             = models.TextField()
+    facebook            = models.TextField()
+    updated             = models.DateTimeField()
+    cash_only           = models.BooleanField()
+    vegetarian_friendly = models.BooleanField()
+    vegan_friendly      = models.BooleanField()
+    is_mobile           = models.BooleanField()
